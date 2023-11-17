@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <!-- TextViews -->
+        <GridView
+            android:id="@+id/tileList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:numColumns="4"
+            android:background="#5C5C5C"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp">
+        </GridView>
+</FrameLayout>
