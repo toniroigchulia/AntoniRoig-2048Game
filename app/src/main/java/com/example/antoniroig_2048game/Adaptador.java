@@ -35,7 +35,16 @@ public class Adaptador extends ArrayAdapter<Integer> {
         }else{
             holder = (ViewHolder) item.getTag();
         }
-        holder.numero.setText((numeros[position] + 1)+"");
+        if(numeros[position] != 0){
+
+            holder.numero.setText((numeros[position])+"");
+        } else {
+
+            holder.numero.setText("");
+        }
+
         return (item);
     }
+
+
 }
