@@ -40,9 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void adapterUpdate(Integer[] arrayNumeros) {
-        tileAdapter.clear();
-        tileAdapter.addAll(arrayNumeros);
-        tileAdapter.notifyDataSetChanged();
+        this.tileAdapter.setNumeros(arrayNumeros);
+        this.tileAdapter.notifyDataSetChanged();
     }
 
     private Integer[] matrizToArray (int[][] numbers) {
@@ -77,20 +76,86 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private int[][] moveTiles(int direccion, int[][] numbers){
-
-        for (int i = 0; i < numbers.length; i++){
-            for (int j = 0; j < numbers[i].length; j ++){
-                System.out.println(i+" "+j);
-                if(!(i == numbers.length-1 || j == numbers.length-1)){
-                    if(numbers[i][j] != 0 && numbers[i][j+direccion] == 0){
-                        System.out.println("a");
-                        numbers[i][j+direccion] = numbers[i][j];
-                        numbers[i][j] = 0;
+        boolean cambio = true;
+        switch (direccion) {
+            // Derecha
+            case 1:
+                while (cambio) {
+                    cambio = false;
+                    for (int i = 0; i < numbers.length; i++){
+                        for (int j = numbers[i].length-2; j >= 0; j--){
+                            if(numbers[i][j] != 0 && numbers[i][j+1] == 0){
+                                numbers[i][j+1] = numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            } else if (numbers[i][j] != 0 && numbers[i][j+1] == numbers[i][j]) {
+                                numbers[i][j+1] = numbers[i][j] + numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            }
+                        }
                     }
                 }
-            }
+                break;
+            // Izquierda
+            case 2:
+                while (cambio){
+                    cambio = false;
+                    for (int i = 0; i < numbers.length; i++){
+                        for (int j = 1; j < numbers.length; j++){
+                            if(numbers[i][j] != 0 && numbers[i][j-1] == 0){
+                                numbers[i][j-1] = numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            } else if (numbers[i][j] != 0 && numbers[i][j-1] == numbers[i][j]) {
+                                numbers[i][j-1] = numbers[i][j] + numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            }
+                        }
+                    }
+                }
+                break;
+            // Arriba
+            case 3:
+                while (cambio){
+                    cambio = false;
+                    for (int i = 1; i < numbers.length; i++){
+                        for (int j = 0; j < numbers.length; j++){
+                            if(numbers[i][j] != 0 && numbers[i-1][j] == 0){
+                                numbers[i-1][j] = numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            } else if (numbers[i][j] != 0 && numbers[i-1][j] == numbers[i][j]) {
+                                numbers[i-1][j] = numbers[i][j] + numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            }
+                        }
+                    }
+                }
+                break;
+            // Abajo
+            case 4:
+                while (cambio){
+                    cambio = false;
+                    for (int i = numbers.length-2; i >= 0; i--){
+                        for (int j = 0; j < numbers.length; j++){
+                            if(numbers[i][j] != 0 && numbers[i+1][j] == 0){
+                                numbers[i+1][j] = numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            } else if (numbers[i][j] != 0 && numbers[i+1][j] == numbers[i][j]) {
+                                numbers[i+1][j] = numbers[i][j] + numbers[i][j];
+                                numbers[i][j] = 0;
+                                cambio = true;
+                            }
+                        }
+                    }
+                }
+                break;
         }
-
+        generateNew2(numbers);
         adapterUpdate(matrizToArray(numbers));
         return numbers;
     }
@@ -114,32 +179,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                             System.out.println("Derecha");
                             this.tileNumbers = moveTiles(1, this.tileNumbers);
                         } else {
-                            onSwipeLeft();
+                            System.out.println("Izquierda");
+                            this.tileNumbers = moveTiles(2, this.tileNumbers);
                         }
                     }
                 } else {
                     if (Math.abs(deltaY) > MIN_DISTANCE) {
                         if (deltaY > 0) {
-                            onSwipeDown();
+                            System.out.println("Abajo");
+                            this.tileNumbers = moveTiles(4, this.tileNumbers);
                         } else {
-                            onSwipeUp();
+                            System.out.println("Arriba");
+                            this.tileNumbers = moveTiles(3, this.tileNumbers);
                         }
                     }
                 }
                 break;
         }
         return true;
-    }
-
-    private void onSwipeLeft() {
-
-    }
-
-    private void onSwipeUp() {
-
-    }
-
-    private void onSwipeDown() {
-
     }
 }

@@ -46,5 +46,11 @@ public class Adaptador extends ArrayAdapter<Integer> {
         return (item);
     }
 
+    public Integer[] getNumeros() {
+        return numeros;
+    }
 
+    public void setNumeros(Integer[] numeros) {
+        this.numeros = numeros;
+    }
 }
